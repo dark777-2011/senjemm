@@ -780,6 +780,149 @@ input:focus{
 
 }
 
+/* =========================
+   HELP BAR (المساعدات)
+========================= */
+
+/* =========================
+   HELP BAR PRO
+========================= */
+
+.helpBar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    margin-bottom:20px;
+}
+
+.helpBar.hidden{
+    display:none;
+}
+
+.helpGroup{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:15px 20px;
+    background:rgba(255,255,255,.08);
+    border-radius:15px;
+    width:auto;
+}
+
+.helpGroup h4{
+    margin:0 15px 0 0;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.helpGroup button{
+    width:auto;
+    margin:0;
+    padding:12px 18px;
+    font-size:15px;
+    font-weight:bold;
+    border-radius:12px;
+}
+/* اجابتان */
+#fifty1,
+#fifty2{
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+/* وقت إضافي */
+#time1,
+#time2{
+    background:linear-gradient(135deg,#06b6d4,#2563eb);
+}
+
+/* اتصال */
+#call1,
+#call2{
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+}
+
+.helpGroup button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+.helpGroup button:active{
+    transform:scale(.97);
+}
+
+.helpGroup button:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    filter:grayscale(100%);
+    transform:none;
+    box-shadow:none;
+}
+
+/* فريق 1 يمين */
+#help1{
+    border-right:4px solid #3b82f6;
+}
+
+/* فريق 2 يسار */
+#help2{
+    border-left:4px solid #ef4444;
+}
+
+#n1, #n2{
+    color:white;
+    font-size:22px;
+    text-align:center;
+    text-shadow:0 0 10px rgba(59,130,246,.6);
+}
+
+#toast{
+    position:fixed;
+    top:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(-20px);
+    min-width:260px;
+    max-width:80%;
+    padding:16px 22px;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+    text-align:center;
+    background:rgba(15,23,42,.95);
+    box-shadow:
+        0 0 20px rgba(59,130,246,.4),
+        0 15px 35px rgba(0,0,0,.5);
+    opacity:0;
+    pointer-events:none;
+    transition:0.35s ease;
+    z-index:9999;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* نجاح */
+#toast.success{
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+    box-shadow:0 0 25px rgba(34,197,94,.6);
+}
+
+/* خطأ */
+#toast.error{
+    background:linear-gradient(135deg,#ef4444,#b91c1c);
+    box-shadow:0 0 25px rgba(239,68,68,.6);
+}
+
+/* تحذير */
+#toast.warning{
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+    box-shadow:0 0 25px rgba(245,158,11,.6);
+}
+
 </style>
 </head>
 
@@ -831,6 +974,11 @@ input:focus{
 
 </div>
 
+
+
+
+
+
 <!-- CATEGORIES -->
 
 <div id="categories" class="screen hidden">
@@ -872,11 +1020,8 @@ input:focus{
     <div class="topbar">
 
         <div class="teamScore">
-
             <h3 id="name1"></h3>
-
             <h1 id="s1">0</h1>
-
         </div>
 
         <button class="btn red" onclick="location.reload()">
@@ -884,14 +1029,31 @@ input:focus{
         </button>
 
         <div class="teamScore">
-
             <h3 id="name2"></h3>
-
             <h1 id="s2">0</h1>
-
         </div>
 
     </div>
+
+    <div class="helpBar hidden" id="helpBar">
+
+        <div class="helpGroup" id="help1">
+            <h4>🔵 فريق 1</h4>
+            <button id="fifty1" onclick="useHelp(1,'fifty')">🎯 اجابتان</button>
+            <button id="time1" onclick="useHelp(1,'time')">⏱ وقت إضافي</button>
+            <button id="call1" onclick="useHelp(1,'call')">📞 اتصال على صديق</button>
+        </div>
+
+        <div class="helpGroup" id="help2">
+            <h4>🔴 فريق 2</h4>
+            <button id="fifty2" onclick="useHelp(2,'fifty')">🎯 اجابتان</button>
+            <button id="time2" onclick="useHelp(2,'time')">⏱ وقت إضافي</button>
+            <button id="call2" onclick="useHelp(2,'call')">📞 اتصال على صديق</button>
+        </div>
+
+    </div>
+
+    <!-- خليه يكمل هنا -->
 
     <div class="board">
 
@@ -932,12 +1094,16 @@ input:focus{
             <div class="answerButtons">
 
                 <button class="btn blue teamBtn" onclick="answer(1)">
-                    🎯 فريق 1
-                </button>
+    🎯 فريق 1
+</button>
 
-                <button class="btn red teamBtn" onclick="answer(2)">
-                    🎯 فريق 2
-                </button>
+<button class="btn red teamBtn" onclick="answer(2)">
+    🎯 فريق 2
+</button>
+
+<button class="btn gray teamBtn" onclick="answer(0)">
+    ❌ لا أحد
+</button>
 
 <button class="btn purple teamBtn" onclick="showAnswer()">
     👁️ إظهار الإجابة
@@ -2501,67 +2667,86 @@ const qs = {
    ⚙ STATE
 ========================= */
 
-let state={
+let state = {
 
-t1:"",
-t2:"",
+t1: "",
+t2: "",
 
-s1:0,
-s2:0,
+s1: 0,
+s2: 0,
 
-sel1:[],
-sel2:[],
+sel1: [],
+sel2: [],
 
-current:null,
+current: null,
 
-time:60,
+time: 20,
 
-timer:null,
+timer: null,
 
-used:new Set()
+used: new Set(),
+
+// ⭐ المساعدات
+help1: {
+    call: true,
+    fifty: true,
+    time: true
+},
+
+help2: {
+    call: true,
+    fifty: true,
+    time: true
+}
 
 };
 
-/* =========================
-   🚀 NAVIGATION
-========================= */
-
-function goTeams(){
-
-    home.classList.add("hidden");
-
-    teams.classList.remove("hidden");
-
-}
 
 function goCategories(){
 
-    state.t1=t1.value.trim();
-
-    state.t2=t2.value.trim();
+    state.t1 = t1.value.trim();
+    state.t2 = t2.value.trim();
 
     if(!state.t1 || !state.t2){
-
         alert("اكتب أسماء الفرق");
-
         return;
     }
 
-    name1.innerText=state.t1;
+    // شرط الطول
+    if(state.t1.length < 2 || state.t1.length > 10){
+        alert("اسم الفريق الأول لازم بين 2 و 10 أحرف");
+        return;
+    }
 
-    name2.innerText=state.t2;
+    if(state.t2.length < 2 || state.t2.length > 10){
+        alert("اسم الفريق الثاني لازم بين 2 و 10 أحرف");
+        return;
+    }
 
-    n1.innerText=state.t1;
+    // 🔥 منع النزول بالصفحة (إغلاق scroll أثناء الاختيار)
+    document.body.classList.add("no-scroll");
 
-    n2.innerText=state.t2;
+    // إخفاء شاشة الفرق
+    document.getElementById("teams").classList.add("hidden");
 
-    teams.classList.add("hidden");
+    // إظهار شاشة الكاتقوري
+    document.getElementById("categories").classList.remove("hidden");
 
-    categories.classList.remove("hidden");
+    // ✨ أسماء الفرق
+    document.getElementById("n1").innerText = state.t1;
+    document.getElementById("n2").innerText = state.t2;
 
+    // 🔥 إظهار المساعدة (مرة واحدة فقط)
+    const helpBar = document.getElementById("helpBar");
+    if(helpBar){
+        helpBar.classList.remove("hidden");
+    }
+
+    // توليد الفئات
     renderCats();
-
 }
+
+
 
 /* =========================
    📂 CATEGORIES
@@ -2644,9 +2829,17 @@ function startGame(){
         return;
     }
 
+    // إخفاء الكاتقوري
     categories.classList.add("hidden");
+
+    // إظهار اللعبة
     game.classList.remove("hidden");
 
+    // 🔥 إظهار المساعدة هنا فقط
+    document.getElementById("helpBar").classList.remove("hidden");
+    
+
+    // بناء اللوحة
     buildBoard(left, state.sel1);
     buildBoard(right, state.sel2);
 }
@@ -2789,34 +2982,36 @@ function answer(team){
 
     clearInterval(state.timer);
 
-    if(team===1){
+    if(team === 1){
 
         state.s1 += state.current.price;
+        s1.innerText = state.s1;
 
-        s1.innerText=state.s1;
+        turnText.innerText = `🔥 ${state.t1} حصل على النقاط!`;
 
-        turnText.innerText=`🔥 ${state.t1} حصل على النقاط!`;
-
-    }else{
+    } 
+    else if(team === 2){
 
         state.s2 += state.current.price;
+        s2.innerText = state.s2;
 
-        s2.innerText=state.s2;
+        turnText.innerText = `🔥 ${state.t2} حصل على النقاط!`;
 
-        turnText.innerText=`🔥 ${state.t2} حصل على النقاط!`;
+    } 
+    else {
 
+        // ❌ لا أحد
+        turnText.innerText = "❌ لم يتم احتساب نقاط لأي فريق";
     }
 
-    q.innerText="✔ تمت الإجابة";
+    q.innerText = "✔ تمت الإجابة";
 
-    time.style.color="#22c55e";
+    time.style.color = "#22c55e";
+    time.style.textShadow = "0 0 25px #22c55e";
 
-    time.style.textShadow="0 0 25px #22c55e";
-
-    state.current=null;
+    state.current = null;
 
     checkWinner();
-
 }
 
 /* =========================
@@ -2903,7 +3098,64 @@ function convertQs(oldQs) {
 const newQs = convertQs(qs);
 console.log(newQs);
 
+function callFriend(team){
+
+    let help = team === 1 ? state.help1 : state.help2;
+
+    if(!help.call){
+        alert("تم استخدام هذه المساعدة");
+        return;
+    }
+
+    help.call = false;
+
+    let arr = qs[state.current.cat][state.current.price];
+
+    let fakeAnswer = arr[Math.floor(Math.random()*arr.length)];
+
+    alert("📞 صديقك يقول: " + fakeAnswer);
+}
+
+
+function useHelp(team, type){
+    const btn = document.getElementById(type + team);
+
+    if(!btn) return;
+
+    btn.disabled = true;
+    btn.innerText = "تم الاستخدام";
+
+    // ⏱ وقت إضافي
+    if(type === "time"){
+        state.time += 15;
+        document.getElementById("time").innerText = state.time;
+    }
+}
+
+function goTeams(){
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("teams").classList.remove("hidden");
+}
+
+function alert(msg, type = "error"){
+    const toast = document.getElementById("toast");
+
+    toast.innerText = msg;
+
+    // إزالة الأنواع القديمة
+    toast.className = "";
+
+    // إضافة النوع
+    toast.classList.add("show", type);
+
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    }, 2200);
+}
+
 </script>
+
+<div id="toast"></div>
 
 </body>
 </html>
